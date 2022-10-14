@@ -1,34 +1,45 @@
 {
-  "name": "datocms-snipcart-gatsby-example",
-  "description": "An example project to demonstrate how you can integrate Gatsby, Snipcart and DatoCMS",
+  "name": "igyal",
   "version": "1.0.0",
-  "author": "Stefano Verna <s.verna@datocms.com>",
-  "dependencies": {
-    "dotenv": "^8.2.0",
-    "gatsby": "^2.24.85",
-    "gatsby-image": "^2.2.34",
-    "gatsby-link": "^2.2.25",
-    "gatsby-plugin-react-helmet": "^3.1.16",
-    "gatsby-plugin-sass": "^2.1.24",
-    "gatsby-plugin-sharp": "^2.3.5",
-    "gatsby-plugin-snipcart": "^1.1.2",
-    "gatsby-source-datocms": "^2.2.4",
-    "node-sass": "^4.12.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-helmet": "^5.2.0"
-  },
+  "description": "iGyal website",
+  "author": "Nicolas Pierre-charles <nicolas@nicode.fr>",
+  "license": "MIT",
   "keywords": [
     "gatsby"
   ],
-  "license": "MIT",
   "scripts": {
+    "clean": "gatsby clean",
+    "prebuild": "npm run clean",
     "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write 'src/**/*.js'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart": "npm run clean",
+    "start": "gatsby develop --verbose",
+    "format": "prettier --write 'src/**/*.js'"
+  },
+  "dependencies": {
+    "clsx": "1.1.1",
+    "dotenv": "^8.2.0",
+    "gatsby": "2.27.4",
+    "gatsby-image": "^2.6.0",
+    "gatsby-link": "^2.2.25",
+    "gatsby-plugin-netlify": "2.11.1",
+    "gatsby-plugin-react-helmet": "^3.1.16",
+    "gatsby-plugin-sass": "^2.1.24",
+    "gatsby-plugin-sharp": "2.14.4",
+    "gatsby-plugin-snipcart": "^1.1.2",
+    "gatsby-source-datocms": "^2.5.7",
+    "gsap": "3.5.1",
+    "node-sass": "^4.12.0",
+    "react": "^17.0.1",
+    "react-case-when": "0.0.2",
+    "react-dom": "^17.0.1",
+    "react-helmet": "^6.1.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "7.19.1",
+    "eslint": "8.25.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-react": "7.31.10",
+    "eslint-plugin-react-hooks": "4.6.0",
     "prettier": "^1.12.0"
   }
 }

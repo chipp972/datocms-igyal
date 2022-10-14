@@ -1,0 +1,30 @@
+{
+  "plugins": ["react", "import", "react-hooks"],
+  "extends": ["plugin:react/recommended", "plugin:import/errors", "plugin:import/warnings"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": false,
+    "jquery": false
+  },
+  "globals": {},
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    },
+    "ecmaFeatures": {
+      "modules": true,
+      "jsx": true
+    }
+  },
+  "rules": {},
+  "settings": {
+    "react": {
+      "version": "latest"
+    }
+  }
+}

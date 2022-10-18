@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Playfair+Display:wght@400;600&display=swap');
+@import './variables.scss';
+
 * {
   box-sizing: border-box;
 }
@@ -16,8 +19,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 body {
-  line-height: 1.5;
-  font-family: consolas, Menlo, monospace, sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
+  color: $text-color-dark;
+  font-family: $body-font-family;
 }
 
 ol, ul {
@@ -39,5 +44,5 @@ table {
 }
 
 body {
-  background: linear-gradient(to bottom, white, cyan, white, MediumVioletRed, white, Green, white, cyan)
+  background: $bg-color;
 }

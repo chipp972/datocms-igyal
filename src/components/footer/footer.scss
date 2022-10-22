@@ -1,0 +1,61 @@
+@import "../../style/variables.scss";
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0 100px 0;
+  position: relative;
+
+  @media (min-width: $desktopMinWidth) {
+    flex-direction: row;
+  }
+
+  .image {
+    margin-bottom: 20px;
+    min-width: 35%;
+  }
+
+
+  .description {
+    text-align: center;
+
+    p {
+      margin-bottom: 10px;
+    }
+  }
+
+  .socialMediaList {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+
+    @media (min-width: $desktopMinWidth) {
+      position: absolute;
+      bottom: 30px;
+    }
+
+    .socialMedia {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      text-decoration: none;
+      color: $text-color-alt;
+
+      @media (min-width: $desktopMinWidth) {
+        margin: 0 70px;
+      }
+
+      .socialMediaIcon {
+        margin-right: 10px;
+        transition: transform 0.2s ease-in-out;
+      }
+
+      &:hover {
+        .socialMediaIcon {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}

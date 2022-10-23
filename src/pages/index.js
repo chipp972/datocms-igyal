@@ -155,7 +155,7 @@ const Home = ({ data }) => (
       <section key={id} style={{ backgroundColor: backgroundColor.hex }} className="SectionContent">
         <div className="Wrap">
           {model.apiKey === 'bloc_de_text'
-            ? <p className="richText" dangerouslySetInnerHTML={{ __html: sectionProps.content }} />
+            ? <div className="richText" dangerouslySetInnerHTML={{ __html: sectionProps.content }} />
             : <MailForm {...sectionProps} />}
         </div>
       </section>
@@ -187,7 +187,7 @@ const Home = ({ data }) => (
     {/* Payment */}
     <section className="SectionContent">
       <div className="Wrap">
-        <p className="richText" dangerouslySetInnerHTML={{ __html: data.payment.text }} />
+        <div className="richText" dangerouslySetInnerHTML={{ __html: data.payment.text }} />
       </div>
     </section>
     <Footer {...data.footer} />

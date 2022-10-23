@@ -8,7 +8,7 @@ export const Footer = ({ backgroundColor, image, text, socialMedias }) => (
     <div className="footer">
       <Img className="image" {...image} />
       <section className="description">
-        <p dangerouslySetInnerHTML={{ __html: text }} />
+        <p className="richText" dangerouslySetInnerHTML={{ __html: text }} />
         <ul className="socialMediaList">
           {socialMedias.map(({ id, icon, label, url }) => (
             <a className="socialMedia" key={id} href={url} target="_blank" rel="noreferrer">

@@ -1,9 +1,15 @@
+@import "./variables.scss";
+
 .richText {
   display: inline-block;
   font-family: $body-font-family;
 
   p {
-    margin-bottom: 30px;
+    margin-bottom: 12px;
+
+    @media (min-width: $tabletMinWidth) {
+      margin-bottom: 30px;
+    }
   }
 
   strong {
@@ -11,9 +17,13 @@
   }
 
   ul {
-    margin-bottom: 30px;
+    margin-bottom: 12px;
     margin-left: 22px;
     list-style: disc;
+
+    @media (min-width: $tabletMinWidth) {
+      margin-bottom: 30px;
+    }
 
     li {
       margin-bottom: 12px;

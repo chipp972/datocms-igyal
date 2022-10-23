@@ -187,7 +187,7 @@ const Home = ({ data }) => (
     {/* Payment */}
     <section className="SectionContent">
       <div className="Wrap">
-        <p dangerouslySetInnerHTML={{ __html: data.payment.text }} />
+        <p className="richText" dangerouslySetInnerHTML={{ __html: data.payment.text }} />
       </div>
     </section>
     <Footer {...data.footer} />

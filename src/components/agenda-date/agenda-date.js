@@ -7,7 +7,7 @@ export const AgendaDate = ({ date, title, description, backgroundColor }) => (
     <div className="date">{date}</div>
     <div className="agenda_date_content">
       <h3 className="title_agenda_date">{title}</h3>
-      <p className="description" dangerouslySetInnerHTML={{ __html: description }} />
+      <p className="richText" dangerouslySetInnerHTML={{ __html: description }} />
     </div>
   </div>
 );

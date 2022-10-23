@@ -2,9 +2,20 @@
 
 .Header {
   padding-bottom: 50px;
-  margin-bottom: 50px;
   width: 100%;
   text-align: center;
+
+  .image {
+    max-height: 300px;
+
+    @media (min-width: $tabletMinWidth) {
+      max-height: 400px;
+    }
+
+    @media (min-width: $desktopMinWidth) {
+      max-height: 500px;
+    }
+  }
 
   h1 {
     font-family: $title-font-family;
@@ -26,9 +37,5 @@
 
   h2 {
     margin-bottom: 20px;
-  }
-
-  .image {
-    max-height: 300px;
   }
 }

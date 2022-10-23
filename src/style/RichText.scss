@@ -1,0 +1,50 @@
+.richText {
+  display: inline-block;
+  font-family: $body-font-family;
+
+  p {
+    margin-bottom: 30px;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  ul {
+    margin-bottom: 30px;
+    margin-left: 22px;
+    list-style: disc;
+
+    li {
+      margin-bottom: 12px;
+    }
+  }
+
+  h1 {
+    margin-bottom: 32px;
+    font-weight: bold;
+    line-height: 1.2;
+    font-size: 44px;
+  }
+
+  h2 {
+    margin-bottom: 24px;
+    font-weight: bold;
+    line-height: 1.2;
+    font-size: 32px;
+  }
+
+  h3 {
+    margin-bottom: 16px;
+    font-weight: bold;
+    line-height: 1.2;
+    font-size: 26px;
+  }
+
+  h4 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    line-height: 1.2;
+    font-size: 22px;
+  }
+}

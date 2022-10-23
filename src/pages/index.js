@@ -5,6 +5,7 @@ import { ProfilePic } from '../components/profile-pic/profile-pic';
 import { AgendaDate } from '../components/agenda-date/agenda-date';
 import { Header } from '../components/header/header';
 import { Footer } from '../components/footer/footer';
+import { MailForm } from '../components/mail-form/mail-form';
 import '../style/index.scss';
 
 export const query = graphql`
@@ -28,7 +29,16 @@ export const query = graphql`
     header: datoCmsHeroSection {
       illustration {
         url
-        fluid(maxHeight: 500, imgixParams: { fm: "jpg" }) {
+        fluid(
+          maxHeight: 500,
+          imgixParams: {
+            fm: "jpg",
+            fit: "crop",
+            crop: "focalpoint",
+            w: "2400",
+            h: "1000"
+          }
+        ) {
           ...GatsbyDatoCmsFluid
         }
       }
@@ -39,10 +49,49 @@ export const query = graphql`
       subtitle
     }
     body: datoCmsBody {
+      content {
+        ...on DatoCmsBlocDeText {
+          id
+          model {
+            apiKey
+          }
+          backgroundColor {
+            hex
+          }
+          content
+        }
+        ...on DatoCmsMailForm {
+          id
+          model {
+            apiKey
+          }
+          backgroundColor {
+            hex
+          }
+          lastnamePlaceholder
+          lastnameLabel
+          firstnamePlaceholder
+          firstnameLabel
+          emailPlaceholder
+          emailLabel
+          buttonLabel
+        }
+      }
+    }
+    schedule: datoCmsScheduleSection {
       backgroundColor {
         hex
       }
-      content
+      title
+      schedule {
+        id
+        date
+        title
+        description
+        backgroundColor {
+          hex
+        }
+      }
     }
     people: datoCmsPeopleSection {
       backgroundColor {
@@ -51,7 +100,18 @@ export const query = graphql`
       peopleList {
         id
         photo {
-          fluid(maxWidth: 500, forceBlurhash: false, imgixParams: { fm: "jpg", auto: "compress" }) {
+          fluid(
+            maxWidth: 500,
+            forceBlurhash: false,
+            imgixParams: {
+              fm: "jpg",
+              auto: "compress"
+              fit: "crop",
+              crop: "focalpoint"
+              w: "500",
+              h: "500"
+            }
+          ) {
             ...GatsbyDatoCmsFluid
           }
         }
@@ -90,52 +150,45 @@ export const query = graphql`
 const Home = ({ data }) => (
   <main className="Container">
     <Header {...data.header} />
-    <section style={{ backgroundColor: data.body.backgroundColor.hex }} className="Wrap">
-      <p dangerouslySetInnerHTML={{ __html: data.body.content }} />
-    </section>
-    <section className="Wrap">
-      <h2 className="headline">Agenda</h2>
-      <div className="Catalogue agenda_content">
-        <AgendaDate
-          date="5 Nov"
-          title="Ma modèle sur mesure"
-          description="Comment être une Femme inspirée et inspirante au quotidien ."
-          bottomLine="Avec Haiha, Coach en image"
-        />
-        <AgendaDate
-          date="6 Nov"
-          title="Confiance et estime de soi"
-          description="Comment avoir confiance en toi et te valoriser, malgré la peur et les doutes ?"
-          bottomLine="Avec Aurélie, Coach de Vie"
-          isOrange
-        />
-        <AgendaDate
-          date="19 Nov"
-          title="Couleurs et énergies"
-          description="Comment exercer ton pouvoir d'attraction grâce aux couleurs ?"
-          bottomLine="Avec Naïka, Lithothérapeute"
-        />
-        <AgendaDate
-          date="20 Nov"
-          title="Colorimétrie et morphologie"
-          description="Comment te sublimer avec style, authenticité et sans frustration ?"
-          bottomLine="Avec Haiha, Coach en image"
-          isOrange
-        />
+    {/* Body */}
+    {data.body.content.map(({id, model, backgroundColor, ...sectionProps}) => (
+      <section key={id} style={{ backgroundColor: backgroundColor.hex }} className="SectionContent">
+        <div className="Wrap">
+          {model.apiKey === 'bloc_de_text'
+            ? <p className="richText" dangerouslySetInnerHTML={{ __html: sectionProps.content }} />
+            : <MailForm {...sectionProps} />}
+        </div>
+      </section>
+    ))}
+    {/* Agenda */}
+    <section style={{ backgroundColor: data.schedule.backgroundColor.hex }} className="SectionContent">
+      <div className="Wrap">
+        <h2 className="headline">{data.schedule.title}</h2>
+        <div className="Catalogue agenda_content">
+          {data.schedule.schedule.map(({ id, ...scheduleProps }) => (
+            <AgendaDate key={id} {...scheduleProps} />
+          ))}
+        </div>
       </div>
     </section>
-    <section style={{ backgroundColor: data.people.backgroundColor.hex }} className="Wrap">
-      <h2 className="title">{data.people.titre}</h2>
-      <div className="Catalogue">
-        {data.people.peopleList.map(({ id, photo, name, title }) => (
-          <div className="Catalogue__item" key={id}>
-            <ProfilePic key={id} image={photo} name={name} title={title} />
-          </div>
-        ))}
+    {/* Intervenantes */}
+    <section style={{ backgroundColor: data.people.backgroundColor.hex }} className="SectionContent">
+      <div className="Wrap">
+        <h2 style={{textAlign: 'center'}} className="title">{data.people.titre}</h2>
+        <div className="Catalogue">
+          {data.people.peopleList.map(({ id, photo, name, title }) => (
+            <div className="Catalogue__item" key={id}>
+              <ProfilePic key={id} image={photo} name={name} title={title} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
-    <section style={{ backgroundColor: data.people.backgroundColor.hex }} className="Wrap">
-      <p dangerouslySetInnerHTML={{ __html: data.payment.text }} />
+    {/* Payment */}
+    <section className="SectionContent">
+      <div className="Wrap">
+        <p dangerouslySetInnerHTML={{ __html: data.payment.text }} />
+      </div>
     </section>
     <Footer {...data.footer} />
   </main>

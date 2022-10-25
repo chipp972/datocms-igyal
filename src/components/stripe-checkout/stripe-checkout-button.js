@@ -32,7 +32,7 @@ export const StripeCheckoutButton = ({ stripePublicKey, product, id, unit_amount
   return (
     <>
       <button className="checkoutButton" role="link" onClick={handleClick}>
-        {`${product.name} - ${parseFloat(unit_amount / 100).toFixed(2)} €`}
+        {`${product.name} - ${parseFloat(unit_amount / 100).toFixed(2)}`}&nbsp;€
       </button>
       {error && <div className="error">{error.message}</div>}
     </>

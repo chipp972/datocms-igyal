@@ -1,0 +1,11 @@
+@import "../../style/variables";
+
+.checkoutButton {
+  border: none;
+  padding: 15px;
+  border-radius: $agenda-border-radius;
+  background-color: $blue;
+  color: $text-color-light;
+  font-size: 20px;
+  cursor: pointer;
+}

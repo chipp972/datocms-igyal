@@ -31,7 +31,21 @@
 .headline {
   font-family: $title-font-family;
   color: $text-color-alt;
-  font-size: 54px;
+  font-size: 34px;
   line-height: 1.2;
   font-weight: bold;
+
+  @media (min-width: $tabletMinWidth) {
+    margin: 42px auto;
+    font-size: 44px;
+  }
+
+  @media (min-width: $desktopMinWidth) {
+    font-size: 48px;
+  }
+
+  &.alternative {
+    color: $pink;
+    font-weight: 400;
+  }
 }

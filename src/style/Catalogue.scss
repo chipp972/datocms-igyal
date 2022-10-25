@@ -1,5 +1,11 @@
+@import "./variables.scss";
+
 .Catalogue {
-  margin-top: 80px;
+  margin-top: 60px;
+
+  @media (min-width: $tabletMinWidth) {
+    margin-top: 80px;
+  }
 }
 
 .Catalogue__item {

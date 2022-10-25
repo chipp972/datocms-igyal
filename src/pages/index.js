@@ -5,8 +5,9 @@ import { ProfilePic } from '../components/profile-pic/profile-pic';
 import { AgendaDate } from '../components/agenda-date/agenda-date';
 import { Header } from '../components/header/header';
 import { Footer } from '../components/footer/footer';
-import { MailForm } from '../components/mail-form/mail-form';
+import { StripeCheckoutButton } from '../components/stripe-checkout/stripe-checkout-button';
 import '../style/index.scss';
+import { BodyContent } from '../components/body-content';
 
 export const query = graphql`
   query Query {
@@ -30,14 +31,8 @@ export const query = graphql`
       illustration {
         url
         fluid(
-          maxHeight: 500,
-          imgixParams: {
-            fm: "jpg",
-            fit: "crop",
-            crop: "focalpoint",
-            w: "2400",
-            h: "1000"
-          }
+          maxHeight: 500
+          imgixParams: { lossless: true, fit: "crop", crop: "focalpoint", w: "2400", h: "1000" }
         ) {
           ...GatsbyDatoCmsFluid
         }
@@ -50,7 +45,7 @@ export const query = graphql`
     }
     body: datoCmsBody {
       content {
-        ...on DatoCmsBlocDeText {
+        ... on DatoCmsBlocDeText {
           id
           model {
             apiKey
@@ -60,7 +55,7 @@ export const query = graphql`
           }
           content
         }
-        ...on DatoCmsMailForm {
+        ... on DatoCmsMailForm {
           id
           model {
             apiKey
@@ -68,13 +63,15 @@ export const query = graphql`
           backgroundColor {
             hex
           }
-          lastnamePlaceholder
+          title
+          description
           lastnameLabel
-          firstnamePlaceholder
           firstnameLabel
-          emailPlaceholder
           emailLabel
           buttonLabel
+          errorMessage
+          invalidEmailErrorMessage
+          successMessage
         }
       }
     }
@@ -101,14 +98,14 @@ export const query = graphql`
         id
         photo {
           fluid(
-            maxWidth: 500,
-            forceBlurhash: false,
+            maxWidth: 500
+            forceBlurhash: false
             imgixParams: {
-              fm: "jpg",
+              fm: "jpg"
               auto: "compress"
-              fit: "crop",
+              fit: "crop"
               crop: "focalpoint"
-              w: "500",
+              w: "500"
               h: "500"
             }
           ) {
@@ -122,6 +119,22 @@ export const query = graphql`
     }
     payment: datoCmsPaymentSection {
       text
+    }
+    config: site {
+      siteMetadata {
+        stripePublicKey
+      }
+    }
+    products: allStripeProduct {
+      edges {
+        node {
+          id
+          active
+          description
+          name
+          default_price
+        }
+      }
     }
     footer: datoCmsFooter {
       backgroundColor {
@@ -147,52 +160,67 @@ export const query = graphql`
   }
 `;
 
-const Home = ({ data }) => (
-  <main className="Container">
-    <Header {...data.header} />
-    {/* Body */}
-    {data.body.content.map(({id, model, backgroundColor, ...sectionProps}) => (
-      <section key={id} style={{ backgroundColor: backgroundColor.hex }} className="SectionContent">
+const Home = ({ data }) => {
+  return (
+    <main className="Container">
+      <Header {...data.header} />
+      <BodyContent {...data.body} />
+      {/* Agenda */}
+      <section
+        style={{ backgroundColor: data.schedule.backgroundColor.hex }}
+        className="SectionContent"
+      >
         <div className="Wrap">
-          {model.apiKey === 'bloc_de_text'
-            ? <div className="richText" dangerouslySetInnerHTML={{ __html: sectionProps.content }} />
-            : <MailForm {...sectionProps} />}
+          <h2 className="headline">{data.schedule.title}</h2>
+          <div className="Catalogue agenda_content">
+            {data.schedule.schedule.map(({ id, ...scheduleProps }) => (
+              <AgendaDate key={id} {...scheduleProps} />
+            ))}
+          </div>
         </div>
       </section>
-    ))}
-    {/* Agenda */}
-    <section style={{ backgroundColor: data.schedule.backgroundColor.hex }} className="SectionContent">
-      <div className="Wrap">
-        <h2 className="headline">{data.schedule.title}</h2>
-        <div className="Catalogue agenda_content">
-          {data.schedule.schedule.map(({ id, ...scheduleProps }) => (
-            <AgendaDate key={id} {...scheduleProps} />
-          ))}
+      {/* Intervenantes */}
+      <section
+        style={{ backgroundColor: data.people.backgroundColor.hex }}
+        className="SectionContent"
+      >
+        <div className="Wrap">
+          <h2 style={{ textAlign: 'center' }} className="headline alternative">
+            {data.people.titre}
+          </h2>
+          <div className="Catalogue">
+            {data.people.peopleList.map(({ id, photo, name, title }) => (
+              <div className="Catalogue__item" key={id}>
+                <ProfilePic key={id} image={photo} name={name} title={title} />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-    {/* Intervenantes */}
-    <section style={{ backgroundColor: data.people.backgroundColor.hex }} className="SectionContent">
-      <div className="Wrap">
-        <h2 style={{textAlign: 'center'}} className="title">{data.people.titre}</h2>
-        <div className="Catalogue">
-          {data.people.peopleList.map(({ id, photo, name, title }) => (
-            <div className="Catalogue__item" key={id}>
-              <ProfilePic key={id} image={photo} name={name} title={title} />
-            </div>
-          ))}
+      </section>
+      {/* Payment */}
+      <section className="SectionContent">
+        <div className="Wrap">
+          <div>
+            <div className="richText" dangerouslySetInnerHTML={{ __html: data.payment.text }} />
+          </div>
+          <ul style={{display: 'grid', gridGap: '10px'}}>
+            {data.products.edges
+              .filter(({ node: { active } }) => active)
+              .map(({ node }) => (
+                <li key={node.id}>
+                  <StripeCheckoutButton
+                    {...node}
+                    stripePublicKey={data.config.siteMetadata.stripePublicKey}
+                  />
+                </li>
+              ))}
+          </ul>
         </div>
-      </div>
-    </section>
-    {/* Payment */}
-    <section className="SectionContent">
-      <div className="Wrap">
-        <div className="richText" dangerouslySetInnerHTML={{ __html: data.payment.text }} />
-      </div>
-    </section>
-    <Footer {...data.footer} />
-  </main>
-);
+      </section>
+      <Footer {...data.footer} />
+    </main>
+  );
+};
 
 Home.propTypes = {
   data: PropTypes.object

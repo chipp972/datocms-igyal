@@ -4,7 +4,7 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  border-radius: 25px;
+  border-radius: $agenda-border-radius;
   background-color: $pink;
   padding: 15px;
   width: 100%;

@@ -1,7 +1,6 @@
 @import "../../style/variables.scss";
 
 .Header {
-  padding-bottom: 50px;
   width: 100%;
   text-align: center;
 
@@ -22,12 +21,12 @@
     color: $blue;
     line-height: 1.2;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 34px;
     margin: 10px auto;
 
     @media (min-width: $tabletMinWidth) {
-      margin: 20px auto;
-      font-size: 44px;
+      padding: 20px auto;
+      font-size: 46px;
     }
 
     @media (min-width: $desktopMinWidth) {
@@ -36,6 +35,6 @@
   }
 
   h2 {
-    margin-bottom: 20px;
+    padding-bottom: 20px;
   }
 }

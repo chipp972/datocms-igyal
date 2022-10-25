@@ -1,0 +1,58 @@
+@import "../../style/variables.scss";
+
+.mailForm {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  margin: 0 auto;
+
+  @media (min-width: $desktopMinWidth) {
+    flex-direction: row;
+  }
+
+  .text {
+    margin-bottom: 18px;
+
+    @media (min-width: $desktopMinWidth) {
+      margin-bottom: 0;
+      margin-right: 18px;
+    }
+  }
+
+  .form {
+    display: grid;
+    grid-gap: 10px;
+  }
+}
+
+.button {
+  border: none;
+  border-radius: $field-border-radius;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: $body-font-family;
+  background-color: $dark-blue;
+  color: $yellow;
+  transition: transform 0.15s ease-in-out;
+  min-width: 300px;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.input {
+  border-radius: $field-border-radius;
+  padding: 15px;
+  font-size: 18px;
+  font-family: $body-font-family;
+  min-width: 300px;
+}
+
+.error {
+  color: #AC1124;
+  font-weight: 600;
+}

@@ -125,14 +125,20 @@ export const query = graphql`
         stripePublicKey
       }
     }
-    products: allStripeProduct {
+    prices: allStripePrice(
+      filter: { active: { eq: true } }
+      sort: { fields: [unit_amount] }
+    ) {
       edges {
         node {
           id
           active
-          description
-          name
-          default_price
+          currency
+          unit_amount
+          product {
+            id
+            name
+          }
         }
       }
     }
@@ -204,16 +210,14 @@ const Home = ({ data }) => {
             <div className="richText" dangerouslySetInnerHTML={{ __html: data.payment.text }} />
           </div>
           <ul style={{display: 'grid', gridGap: '10px'}}>
-            {data.products.edges
-              .filter(({ node: { active } }) => active)
-              .map(({ node }) => (
-                <li key={node.id}>
-                  <StripeCheckoutButton
-                    {...node}
-                    stripePublicKey={data.config.siteMetadata.stripePublicKey}
-                  />
-                </li>
-              ))}
+            {data.prices.edges.map(({ node }) => (
+              <li style={{textAlign: 'center'}} key={node.id}>
+                <StripeCheckoutButton
+                  {...node}
+                  stripePublicKey={data.config.siteMetadata.stripePublicKey}
+                />
+              </li>
+            ))}
           </ul>
         </div>
       </section>

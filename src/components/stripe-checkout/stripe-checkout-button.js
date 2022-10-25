@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { loadStripe } from '@stripe/stripe-js';
 import './checkout-button.scss';
 
-export const StripeCheckoutButton = ({ stripePublicKey, name, default_price }) => {
+export const StripeCheckoutButton = ({ stripePublicKey, product, id, unit_amount }) => {
   const stripePromise = React.useRef(null);
   const [error, setError] = React.useState('');
 
@@ -16,7 +16,7 @@ export const StripeCheckoutButton = ({ stripePublicKey, name, default_price }) =
     const result = await stripe.redirectToCheckout({
       lineItems: [
         {
-          price: default_price,
+          price: id,
           quantity: 1
         }
       ],
@@ -32,7 +32,7 @@ export const StripeCheckoutButton = ({ stripePublicKey, name, default_price }) =
   return (
     <>
       <button className="checkoutButton" role="link" onClick={handleClick}>
-        {name}
+        {`${product.name} - ${parseFloat(unit_amount / 100).toFixed(2)} €`}
       </button>
       {error && <div className="error">{error.message}</div>}
     </>
@@ -41,6 +41,10 @@ export const StripeCheckoutButton = ({ stripePublicKey, name, default_price }) =
 
 StripeCheckoutButton.propTypes = {
   stripePublicKey: PropTypes.string.isRequired,
-  default_price: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
+  product: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  }),
+  unit_amount: PropTypes.number.isRequired
 };

@@ -125,10 +125,7 @@ export const query = graphql`
         stripePublicKey
       }
     }
-    prices: allStripePrice(
-      filter: { active: { eq: true } }
-      sort: { fields: [unit_amount] }
-    ) {
+    prices: allStripePrice(filter: { active: { eq: true } }, sort: { fields: [unit_amount] }) {
       edges {
         node {
           id
@@ -138,6 +135,9 @@ export const query = graphql`
           product {
             id
             name
+            metadata {
+              priority
+            }
           }
         }
       }
@@ -166,7 +166,12 @@ export const query = graphql`
   }
 `;
 
+const getPriority = ({ node }) => parseInt(node?.product?.metadata?.priority, 10);
+
 const Home = ({ data }) => {
+  const sortedPaymentOptions = data.prices.edges.sort(
+    (nodeA, nodeB) => getPriority(nodeA) - getPriority(nodeB)
+  );
   return (
     <main className="Container">
       <Header {...data.header} />
@@ -209,9 +214,9 @@ const Home = ({ data }) => {
           <div>
             <div className="richText" dangerouslySetInnerHTML={{ __html: data.payment.text }} />
           </div>
-          <ul style={{display: 'grid', gridGap: '10px'}}>
-            {data.prices.edges.map(({ node }) => (
-              <li style={{textAlign: 'center'}} key={node.id}>
+          <ul style={{ display: 'grid', gridGap: '10px' }}>
+            {sortedPaymentOptions.map(({ node }) => (
+              <li style={{ textAlign: 'center' }} key={node.id}>
                 <StripeCheckoutButton
                   {...node}
                   stripePublicKey={data.config.siteMetadata.stripePublicKey}
